@@ -241,7 +241,7 @@ def get_rover_id(rover_id: int):
 @app.post("/lab4/rovers")
 def rover_create(body: RoverInfo):
     data = get_json(map_file)
-    filepath = os.path.join(rover_dir, f"rover_{data["next_id"]}.json")
+    filepath = os.path.join(rover_dir, f"rover_{data['next_id']}.json")
     with open(filepath, "w") as f:
         json.dump({"rover": [data["next_id"], "Not Started", [0, 0], body.instructions]}, f)
     data["next_id"]+=1
