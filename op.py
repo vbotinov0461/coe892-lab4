@@ -39,7 +39,9 @@ def update_mine(arg):
 
 def get_rover(arg):
     response = requests.get(URL + "rovers") if arg == 0 else requests.get(URL + f"rovers/{arg}") 
-    print(f"Response to rover request: {response.json()}")
+    rovers = response.json()
+    if not rovers: print(f"No rovers exist yet.")
+    else: print(f"Response to rover request: {rovers}")
 
 
 def create_rover(arg):
