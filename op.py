@@ -8,7 +8,7 @@ def get_map():
 
 
 def update_map(arg1, arg2):
-    response = requests.put(URL + "map", json={arg1, arg2})
+    response = requests.put(URL + "map", json={"dim_v": arg2, "dim_h": arg1})
     print(f"Updated {response.json()}")
 
 
@@ -24,7 +24,7 @@ def delete_mine(arg):
 
 
 def create_mine(arg):
-    response = requests.post(URL + "mines", json={arg[2], arg[3], arg[4]})
+    response = requests.post(URL + "mines", json={"x": arg[2], "y": arg[3], "serial": arg[4]})
     print(f"Created mine {response.json()}")
 
 
@@ -43,7 +43,7 @@ def get_rover(arg):
 
 
 def create_rover(arg):
-    response = requests.post(URL + "rovers", json={arg[2]})
+    response = requests.post(URL + "rovers", json={"instructions": arg})
     print(f"Created rover: {response.json()}")
 
 
@@ -53,7 +53,7 @@ def delete_rover(arg):
 
 
 def send_rover(arg):
-    response = requests.put(URL + f"{arg[2]}", json={arg[3]})
+    response = requests.put(URL + f"{arg[2]}", json={"instructions": arg[3]})
     print(f"HANDLE THIS RESPONSE: {response.json()}")
 
 
@@ -90,7 +90,8 @@ if __name__ == '__main__':
 
     if start == "go":
         while True:
-            user_in, args = input("Please enter a command: "), user_in.split()
+            user_in = input("Please enter a command: ")
+            args = user_in.split()
 
             if "map" in args:
                 if "get" in args: get_map()
