@@ -222,7 +222,7 @@ def mine_update(mine_id: int, body: MineInfo):
 
 @app.get("/lab4/rovers")
 def get_rovers():
-    return "No rovers deployed." if not os.listdir(rover_dir) else os.listdir(rover_dir)
+    return [] if not os.listdir(rover_dir) else os.listdir(rover_dir)
 
 
 @app.get("/lab4/rovers/{rover_id}")
