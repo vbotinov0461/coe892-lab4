@@ -222,11 +222,7 @@ def mine_update(mine_id: int, body: MineInfo):
 
 @app.get("/lab4/rovers")
 def get_rovers():
-    all_data = []
-    # Send full rover list by reading all json in rover directory
-    for file in os.listdir(rover_dir):
-        all_data.append(get_json(os.path.join(rover_dir, file)))
-    return all_data
+    return "No rovers deployed." if not os.listdir(rover_dir) else os.listdir(rover_dir)
 
 
 @app.get("/lab4/rovers/{rover_id}")
