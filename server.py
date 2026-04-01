@@ -170,7 +170,7 @@ def mine_create(body: MineInfo):
     # Update map
     map_data = get_json(map_file)
     map_data["grid"][body.x][body.y] = 1
-    with open(map_file, "w") as f: json.dump(map_file, f, indent=4)
+    with open(map_file, "w") as f: json.dump(map_data, f, indent=4)
     # Add json record
     data["mines"].append([data["next_id"], body.serial, [body.x, body.y]])
     data["next_id"]+=1
