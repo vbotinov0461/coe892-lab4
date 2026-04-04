@@ -1,7 +1,7 @@
 import requests
 
-# URL = "https://coe892-lab4.onrender.com/lab4/"
-URL = "http://localhost:8000/lab4/"
+URL = "https://coe892-lab4.onrender.com/lab4/"
+# URL = "http://localhost:8000/lab4/"
 
 def get_map(): return requests.get(URL + "map")
 def update_map(arg1, arg2): return requests.put(URL + "map", json={"dim_v": arg2, "dim_h": arg1})
