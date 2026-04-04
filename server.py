@@ -249,7 +249,7 @@ def rover_dispatch(rover_id: int):
             # Check if we are leaving a mine
             map_data = get_json(map_file)
             if map_data["grid"][target["coords"][1]][target["coords"][0]] == 1: 
-                print(f"[R{target["id"]}] Blew UP!")
+                print(f"[R{target['id']}] Blew UP!")
                 map_data["grid"][target["coords"][1]][target["coords"][0]] = 0
                 with open(map_file, "w") as f: json.dump(map_data, f, indent=4) 
                 target["status"] = "Eliminated"
