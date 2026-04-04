@@ -253,6 +253,12 @@ def rover_dispatch(rover_id: int):
                 map_data["grid"][target["coords"][1]][target["coords"][0]] = 0
                 with open(map_file, "w") as f: json.dump(map_data, f, indent=4) 
                 target["status"] = "Eliminated"
+
+                mine_data = get_json(mines_file)
+                for m in mine_data["mines"]:
+                    if m[2] == [target["coords"][0], target["coords"][1]]:
+                        mine_data["mines"].remove(m)
+                with open(mines_file, "w") as f: json.dump(mine_data, f, indent=4)
                 break
             else: target["coords"] = move(target["coords"], target["facing"])
         elif c == "D": dig(target["coords"])
