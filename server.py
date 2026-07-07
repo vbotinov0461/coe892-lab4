@@ -1,10 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import json
-import os
-import random
-import string
-import hashlib
+import json, os, random, string, hashlib
 
 chars = string.ascii_letters + string.digits  # String pool for PIN
 
@@ -59,7 +55,7 @@ def dig(l):
         print("Mine disarmed!")
 
 
-# -- DEFINE JSON ASSETS --
+# Define JSON assets
 map_file, mines_file = "map.json", "mines.json"
 rovers, next_rover_id, next_mine_id = [], 1, 3
 
@@ -71,7 +67,7 @@ if not os.path.exists(mines_file):
     with open(mines_file, "w") as F:
         json.dump({"mines": [[1, "x1y0", [1, 0]], [2, "x0y2", [0, 2]]]}, F)
 
-# --- FastAPI Logic ---
+# FastAPI logic 
 app = FastAPI()
 
 
