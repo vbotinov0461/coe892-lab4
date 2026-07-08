@@ -12,9 +12,9 @@ def get_json(fname):
             return {}  # Or return the default structure for that specific file
         with open(fname, "r") as f: return json.load(f)
     except json.JSONDecodeError:
-        return {}
-# facing legend --> SOUTH=0, WEST=1, NORTH=2, EAST=3
+        return {}        
 def turn(ltr, d): 
+    # facing legend --> SOUTH=0, WEST=1, NORTH=2, EAST=3
     print("Turning!")
     return (d + (1 if ltr == "R" else -1)) % 4
 def move(l, d):
@@ -115,10 +115,10 @@ def get_mines(): return get_json(mines_file)
 
 @app.get("/lab4/mines/{mine_id}")
 def get_mines_id(mine_id: int):
-    data, flag = get_json(mines_file), False
-    for m in data["mines"]:
-        if m[0] == mine_id: result, flag = m, True
-    if not flag: result = {"Failed": "Mine doesn't exist"}
+    result = {"Failed": "Mine doesn't exist"}
+    data = get_json(mines_file)
+    for m in data["mines"]: 
+        if m[0] == mine_id: result = m
     return result
 
 @app.delete("/lab4/mines/{mine_id}")
@@ -136,7 +136,7 @@ def mine_delete(mine_id: int):
     map_data["grid"][coords[1]][coords[0]] = 0
     with open(map_file, "w") as f: json.dump(map_data, f, indent=4)
     
-    # Erase from ref json
+    # Erase from mines file
     original_len = len(data["mines"])
     data["mines"] = [m for m in data["mines"] if m[0] != mine_id]
     with open(mines_file, "w") as f: json.dump(data, f, indent=4)
@@ -163,33 +163,24 @@ def mine_create(body: MineInfo):
 
 @app.put("/lab4/mines/{mine_id}")
 def mine_update(mine_id: int, body: MineInfo):
-    data, flag = get_json(mines_file), False
-    # Check existence
-    for m in data["mines"]:
-        if m[0] == mine_id: flag = True
-    if not flag: return {"Failed": "Mine doesn't exist"}
-    
+    data = get_json(mines_file)
+    result = {"Failed": "Mine doesn't exist"}
+
+    # Find the entry and update it + the map data
     result = data
     for m in data["mines"]:
         if m[0] == mine_id:
-            if body.serial is not None: m[1] = body.serial
-            map_data = get_json(map_file)
-            if (body.x is not None) and (body.y is not None):
-                map_data["grid"][m[2][1]][m[2][0]] = 0
-                map_data["grid"][body.y][body.x] = 1
-                m[2][0], m[2][1] = body.x, body.y
-            elif body.x is not None:
-                map_data["grid"][m[2][1]][m[2][0]] = 0
-                map_data["grid"][body.y][m[2][0]] = 1
-                m[2][0] = body.x
-            elif body.y is not None:
-                map_data["grid"][m[2][1]][m[2][0]] = 0
-                map_data["grid"][m[2][1]][body.x] = 1
-                m[2][1] = body.y
-            with (map_file, "w") as f: json.dump(map_data, f, indent=4)
+            m[1] = body.serial
+            # Please add a comment to remind of the JSON structure
+            map_data["grid"][m[2][1]][m[2][0]] = 0
+            map_data["grid"][body.y][body.x] = 1
+            m[2][0], m[2][1] = body.x, body.y
+
+            with open(map_file, "w") as f: json.dump(map_data, f, indent=4)
+            with open(mines_file, "w") as f: json.dump(data, f, indent=4)
             result = m
             break
-    with open(mines_file, "w") as f: json.dump(data, f, indent=4)
+    
     return result
 
 @app.get("/lab4/rovers")
@@ -228,16 +219,19 @@ def rover_sendInst(rover_id: int, body: RoverInfo):
         if r["id"]==rover_id:
             r["instructions"] = body.instructions
             found = True
-    return {"Success": f"Successfully passed instructions to Rover {rover_id}"} if found else {"Failed": f"Could not pass instructions to Rover {rover_id}"}
+    return {"Success": f"Passed instructions to Rover {rover_id}"} if found else {"Failed": f"Did not find {rover_id}"}
 
 @app.post("/lab4/rovers/{rover_id}/dispatch")
 def rover_dispatch(rover_id: int):
     global rovers
     target = {}
+
+    # Check for existance
     for r in rovers:
         if r["id"]==rover_id: target = r
     if not target: return {"Failed": "Rover doesn't exist"}
 
+    # Execute rover instructions
     target["status"] = "Moving"
     for c in target["instructions"]:
         if (c == "L") or (c == "R"): target["facing"] = turn(c, target["facing"])

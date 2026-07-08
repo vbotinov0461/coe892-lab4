@@ -1,3 +1,7 @@
+TO DO
+
+1. 
+
 USER CONTROL FUNCTIONS
 
 ---MAP---
@@ -15,3 +19,8 @@ CREATE -> User may provide instructions as {ABC}, otherwise rover is created wit
 DELETE -> User provides ID as {X}
 SEND -> User provides ID and instructions as {X, ABC}
 DISPATCH -> User provides ID as {X}
+
+
+NOTES
+
+The mine and map info is persistently stored as a json file, but the rovers are completely volatile json objects. 

@@ -1,7 +1,8 @@
-import requests, time
+import requests
+import time
 
-URL = "https://coe892-lab4.onrender.com/lab4/"
-# URL = "http://localhost:8000/lab4/"
+# URL = "https://coe892-lab4.onrender.com/lab4/"
+URL = "http://localhost:8000/"
 
 
 # UI text assets
@@ -33,12 +34,7 @@ def update_map(arg1, arg2): return requests.put(URL + "map", json={"dim_v": arg2
 def get_mine(arg): return requests.get(URL + "mines" if arg == 0 else URL + f"mines/{arg}")
 def delete_mine(arg): return requests.delete(URL + f"mines/{arg}")
 def create_mine(arg): return requests.post(URL + "mines", json={"x": arg[2], "y": arg[3], "serial": arg[4]})
-def update_mine(arg):
-    payload = {}
-    if arg[1] is not None: payload["x"] = arg[1]
-    if arg[2] is not None: payload["y"] = arg[2]
-    if arg[3] is not None: payload["serial"] = arg[3]
-    return requests.put(URL + f"mines/{arg}", json=payload)
+def update_mine(arg): return requests.put(URL + f"mines/{arg}", json={"x": arg[1], "y": arg[2], "serial": arg[3]}) # Please test this
 def get_rover(arg): return requests.get(URL + "rovers") if arg == 0 else requests.get(URL + f"rovers/{arg}") 
 def create_rover(arg): return requests.post(URL + "rovers", json={"instructions": arg})
 def delete_rover(arg): return requests.delete(URL + f"rovers/{arg}")
@@ -47,6 +43,7 @@ def dispatch_rover(arg): return requests.post(URL + f"rovers/{arg}/dispatch")
 
 
 if __name__ == '__main__':
+    app.run(debug=False, port=5000, use_reloader=False)
     
     # Parse arguments and call the relevant handlers
     # Consider changing mechanism to argparse

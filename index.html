@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DMR-1 // Demining Rover Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="console">
+
+    <header class="console-header">
+      <div class="header-left">
+        <span class="unit-tag">UNIT</span>
+        <h1>DMR-1 DEMINING ROVER</h1>
+      </div>
+      <div class="header-right">
+        <div class="stat">
+          <span class="stat-label">MINES REMAINING</span>
+          <span class="stat-value" id="mines-remaining">--</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">GRID</span>
+          <span class="stat-value" id="grid-dims">--</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="console-body">
+
+      <section class="grid-panel">
+        <div id="grid" class="grid" role="grid" aria-label="Minefield grid"></div>
+        <div class="controls-hint">
+          MOVE: <kbd>&uarr;</kbd><kbd>&darr;</kbd><kbd>&larr;</kbd><kbd>&rarr;</kbd> or click an adjacent tile
+        </div>
+      </section>
+
+      <aside class="side-panel">
+        <div class="rover-status">
+          <span class="panel-title">ROVER POSITION</span>
+          <span class="stat-value" id="rover-pos">(0, 0)</span>
+        </div>
+
+        <div class="log-panel">
+          <span class="panel-title">ACTIVITY LOG</span>
+          <div id="log" class="log"></div>
+        </div>
+
+        <button id="reset-btn" class="reset-btn">RESET MISSION</button>
+      </aside>
+
+    </main>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
